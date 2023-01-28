@@ -1,0 +1,22 @@
+*{
+    box-sizing: border-box; 
+}
+
+.main{
+    margin-left: 300px;
+    margin-right: 300px;
+    margin-top: 150px;
+}
+
+.text{
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+.second{
+    margin-left: 300px;
+    width: 1000px;
+}
+.btn{
+    margin-left: 1000px;
+}

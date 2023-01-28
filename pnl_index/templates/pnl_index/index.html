@@ -1,0 +1,77 @@
+{% load static %}
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link type="text/css" href="{% static 'pnl_index/css/styles.css' %}" rel="stylesheet" />
+    <title>Pnl index</title>
+  </head>
+  <body>
+    <div class='main'>
+        <table  align="center" class="table" >
+            <thead class='table-light'>
+            <tr align="center" >
+                <th scope="col"></th>
+                <th scope="col">Pnl</th>
+                <th scope="col">Pnl_%</th>
+                <th scope="col">Index PnL</th>
+                <th scope="col">Period</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr align="center">
+                <th scope="row">Value</th>
+                <td>{{ index_data.pnl_total }}</td>
+                <td>
+                    {% if profit_in_percent %}
+                    {{ profit_in_percent }}
+                    {% elif index_data.profit_in_percent %}
+                    {{ index_data.profit_in_percent }}
+                    {% else %}
+                    0.00
+                    {% endif %}  
+                </td>
+                <td>
+                  {{ index_data.index_pnl }}
+                </td>
+                <td>
+                  {% if period %}
+                  {{ period }}
+                  {% else %}
+                  {{ index_data.period }}
+                  {% endif %}  
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+   <br>
+  <br>
+    <br>
+    <form action={% url 'pnl_index:main' %}  method='post'>
+      {% csrf_token %}
+        <div class="input-group second">
+            <span class="input-group-text" >Начало:</span>
+            {{ form.start_date }}
+            {{ form.start_time }}
+            <span class="input-group-text" >Окончание:</span>
+            {{ form.end_date }}
+            {{ form.end_time }}
+            <button class="btn btn-primary" type="submit" id="button-addon2">Custom period</button>
+            <a class="btn btn-success" href={% url 'pnl_index:main' %} id="button-addon2">Whole period</a>
+        </div>
+    </form>
+    <br>
+    <div class='text'>Для отображения показателей за определенный период введите дату и время:
+    </div> 
+
+  
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  </body>
+</html>
