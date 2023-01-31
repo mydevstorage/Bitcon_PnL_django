@@ -5,6 +5,8 @@ from datetime import datetime
 from django.views.generic import FormView
 from django.views.generic.list import ListView
 from .forms import IndexForm
+import json
+from django.http import JsonResponse
 
 
 class IndexView(FormView, ListView):
@@ -14,7 +16,7 @@ class IndexView(FormView, ListView):
     context_object_name = 'index_data'
     form_class = IndexForm
 
-    def get_queryset(self): 
+    def get_queryset(self):
         '''Получение последней записи'''
         queryset = super().get_queryset()
         return queryset.last()
@@ -31,25 +33,12 @@ class IndexView(FormView, ListView):
         return context
 
 
-    def form_valid(self, form):
-        '''Получение, обработка данных из формы'''
-        CustomPeriod.create_custom_record(form.cleaned_data)
-        return redirect('pnl_index:custom')
+    def post(self, request):
+        data = json.loads(request.body)
+        result = handle_custom_period_request(data)
+        return JsonResponse(result)
 
 
-
-class CustomPeriodView(FormView, ListView):
-    '''Дополнительный контроллер для обработки запроса кастомного периода'''
-    model = CustomPeriod
-    template_name = "pnl_index/index.html"
-    context_object_name = 'index_data'
-    form_class = IndexForm
-
-    def get_queryset(self): 
-        queryset = super().get_queryset()
-        return queryset.last()
-
-    
 
 
 
